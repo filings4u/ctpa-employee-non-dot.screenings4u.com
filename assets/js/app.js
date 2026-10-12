@@ -60,7 +60,7 @@ function shell(c){
     <main class="main">
       <header class="top">
         <div class="top-left"><button class="menu" id="menu" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileNav"><span class="menu-bars" aria-hidden="true"><span></span><span></span><span></span></span></button><span class="crumb">${esc(planLabel)} / ${esc(cfgPage(current).label)}</span></div>
-        <div class="top-right"><span class="pill">${esc(C.kind==='self'?'Self Service':'Management')}</span><span class="pill">NON-DOT</span><button class="signout" id="logout" type="button">Sign out</button></div>
+        <div class="top-right"><span class="pill">${esc(C.kind==='self'?'Self Service':'Management')}</span><span class="pill">NON-DOT</span><a id="s4uSwitchPortal" href="https://portal.screenings4u.com/selector.html" style="display:inline-flex;align-items:center;padding:8px 12px;border:1px solid #325aa3;border-radius:8px;color:#325aa3;font-weight:700;text-decoration:none">Switch Portal</a><button class="signout" id="logout" type="button">Sign out</button></div>
       </header>
       <section class="mobile-nav" id="mobileNav" aria-hidden="true" aria-label="Portal navigation"><div class="mobile-nav-inner"><div class="mobile-nav-head"><div><span>Portal navigation</span><strong>${esc(planLabel)}</strong></div><span class="mobile-nav-current">${esc(cfgPage(current).label)}</span></div><nav class="mobile-nav-links">${links}</nav><div class="mobile-nav-foot"><span>${esc(C.domain)}</span><small>Select a page to close this menu.</small></div></div></section>
       <div class="content"><div id="toast"></div><section class="hero"><span class="hero-kicker">${esc(planLabel)}</span><h1>${esc(cfgPage(current).label)}</h1><p id="subtitle">Loading NON-DOT Workforce workspace.</p><div class="hero-actions" id="actions"></div></section><section class="section" id="content"><div class="panel"><div class="loading-msg">Loading…</div></div></section></div>
@@ -83,7 +83,7 @@ function shell(c){
     window.addEventListener('resize',()=>{if(window.innerWidth>820)setMobileNav(false)},{passive:true});
     document.addEventListener('keydown',e=>{if(e.key==='Escape')setMobileNav(false)});
   }
-  $('#logout').onclick=async()=>{localStorage.removeItem(storageKey());localStorage.removeItem(subKey());await sb.auth.signOut();location.replace('/login.html')};
+  $('#logout').onclick=async()=>{localStorage.removeItem(storageKey());localStorage.removeItem(subKey());await sb.auth.signOut();location.replace('https://portal.screenings4u.com/')};
 }
 
 function notice(message,type='bad'){
@@ -327,7 +327,7 @@ async function boot(){
     shell(ctx);window.portalCtx=ctx;await refresh();
   }catch(err){
     const msg=String(err?.message||err||'');
-    if(/unauthorized|session|jwt|sign in/i.test(msg)){location.replace('/login.html');return}
+    if(/unauthorized|session|jwt|sign in/i.test(msg)){location.replace('https://portal.screenings4u.com/');return}
     document.body.className='';
     document.body.innerHTML=`<main class="login-page"><section class="login-card"><img class="login-logo" src="/assets/img/logo.png" alt="screenings4u"><h1>Portal unavailable</h1><p>${esc(msg||'This NON-DOT Workforce portal could not be loaded.')}</p><a class="btn primary" href="/login.html">Return to sign in</a></section></main>`;
   }
